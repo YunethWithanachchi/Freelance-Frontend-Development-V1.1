@@ -11,6 +11,7 @@ type AuthContextType = {
     loading:boolean;
     login: (data: GoogleLoginResponse) => void;
     logout: () => void;
+    updateUser: (user:User) => void;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -67,11 +68,16 @@ export const AuthProvider = ({ children }: Props) => {
         setUser(null);
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        navigate("/login");
+        navigate("/");
     };
 
+    const updateUser = (updatedUser: User)=>{
+        setUser(updatedUser);
+        localStorage.setItem("user",JSON.stringify(updatedUser));
+    }
+
     return (
-        <AuthContext.Provider value={{ user, token, loading, login, logout }}
+        <AuthContext.Provider value={{ user, token, loading, login, logout, updateUser }}
         >
             {children}
         </AuthContext.Provider>

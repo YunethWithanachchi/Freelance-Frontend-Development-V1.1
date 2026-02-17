@@ -4,13 +4,17 @@ import type { JSX } from "react";
 import { AuthContext } from "./context/AuthContext";
 
 // Pages / Components
+import { LandingPage } from "./pages/LandingPage";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import RoleCheckpoint from "./components/RoleCheckpoint.tsx";
+import ClientDashboard from "./pages/ClientDashboard.tsx";
+import FreelancerDashboard from "./pages/FreelancerDashboard.tsx";
+import CompleteProfile from "./components/CompleteProfile.tsx";
 
 
 // Temporary Dashboard Components
-const ClientDashboard = () => {
+/*const ClientDashboard = () => {
     const { logout } = useContext(AuthContext);
 
     return (
@@ -39,7 +43,7 @@ const FreelancerDashboard = () => {
             <button onClick={logout}>Logout</button>
         </div>
     );
-};
+};*/
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
@@ -53,7 +57,20 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 
     return children;
 };
+const LandingPageWrapper = () => {
+    const { token } = useContext(AuthContext);
+    const navigate = useNavigate();
 
+    // If already logged in, skip the landing page
+    if (token) return <Navigate to="/role-checkpoint" replace />;
+
+    return (
+        <LandingPage
+            onSignup={() => navigate("/signup")}
+            onLogin={() => navigate("/login")}
+        />
+    );
+};
 
 
 function App() {
@@ -73,6 +90,10 @@ function App() {
 
     return (
         <Routes>
+            <Route
+                path="/"
+                element={<LandingPageWrapper/>}
+            />
             {/* Auth Routes */}
             <Route path="/login" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
@@ -114,7 +135,7 @@ function App() {
             />
 
             {/* Fallback */}
-            <Route path="*" element={<SignIn />} />
+            <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>
     );
 }

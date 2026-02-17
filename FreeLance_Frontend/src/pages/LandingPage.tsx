@@ -334,9 +334,10 @@ const styles: { [key: string]: React.CSSProperties } = {
 
 interface LandingPageProps {
     onSignup?: () => void;
+    onLogin?: () => void;
 }
 
-export function LandingPage({ onSignup }: LandingPageProps) {
+export function LandingPage({ onSignup,onLogin }: LandingPageProps) {
     return (
         <div style={styles.container}>
             <nav style={styles.nav}>
@@ -351,13 +352,13 @@ export function LandingPage({ onSignup }: LandingPageProps) {
                     <a href="#enterprise" style={styles.link}>Enterprise</a>
                 </div>
                 <div style={styles.authButtons}>
-                    <button style={styles.loginBtn}>Log In</button>
+                    <button style={styles.loginBtn} onClick={onLogin}>Log In</button>
                     <button style={styles.signupBtn} onClick={onSignup}>Sign Up</button>
                 </div>
             </nav>
 
             <header style={styles.hero}>
-                <h1 style={styles.heroTitle}>
+            <h1 style={styles.heroTitle}>
                     Hire expert freelancers<br />
                     <span style={{ color: "#2563eb" }}>for any job, online.</span>
                 </h1>
